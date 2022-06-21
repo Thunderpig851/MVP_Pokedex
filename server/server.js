@@ -1,19 +1,28 @@
 const express = require('express')
 const app = express()
 const axios = require('axios')
-const path = require('path')
 require('dotenv').config()
 
-app.use(express.static(path.join(__dirname, 'dist')))
+app.use(express.static('public'))
 app.use(express.json())
 
-app.get('/testApi', (req, res) => {
+app.get('/getPokemon', (req, res) => {
   const name = req.query.name
+  console.log('here')
+  const options = {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json'
+    },
+    mode: 'no-cors',
+    url: `https://pokeapi.co/api/v2/pokemon/${name}`,
+    method: 'get'
+  }
 
-  axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`)
+  axios(options)
     .then(response => {
-      console.log(response.data)
-      res.sendStatus(200)
+      // console.log(response.data)
+      res.json(response.data)
     })
     .catch(err => {
       console.log(err)
