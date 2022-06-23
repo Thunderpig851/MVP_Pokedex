@@ -5,7 +5,7 @@ const Dex = ({ currentPokemon, handleTextFieldChange, searchTheDex, addToCurrent
   if (!Object.keys(currentPokemon).length) {
     return null
   }
-  console.log(currentPokemon)
+
   const stats = currentPokemon.stats.map(element => { return { name: element.stat.name, base: element.base_stat } })
 
   return (
@@ -18,8 +18,13 @@ const Dex = ({ currentPokemon, handleTextFieldChange, searchTheDex, addToCurrent
 
       <h2 className='justify-center pt-8 pb-4 pl-2'>{currentPokemon.name[0].toUpperCase() + currentPokemon.name.substring(1)}</h2>
         <div className='grid grid-cols-2 pb-8'>
-          <img src={currentPokemon.sprites.versions['generation-v']['black-white'].animated.front_default}
-          className='h-44 p-2'/>
+          {(() => {
+            if (!currentPokemon.sprites.versions['generation-v']['black-white'].animated.front_default) {
+              return <img src={currentPokemon.sprites.front_default} className='h-44 p-2'/>
+            } else {
+              return <img src={currentPokemon.sprites.versions['generation-v']['black-white'].animated.front_default} className='h-44 p-2'/>
+            }
+          })()}
 
           <img src={currentPokemon.sprites.other['official-artwork'].front_default}
             className='h-48'/>
